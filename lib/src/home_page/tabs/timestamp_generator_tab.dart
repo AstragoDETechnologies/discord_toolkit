@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'general_tab_description.dart';
 
+enum MsgTypes {
+  relative,
+  shortTime,
+  longTime,
+  shortDate,
+  longDate,
+  longDateWithShortTime,
+  longDateWithDayOfWeekAndShortTime,
+}
+
 class TimestampGeneratorTab extends StatefulWidget {
   const TimestampGeneratorTab({Key? key}) : super(key: key);
 
@@ -12,6 +22,8 @@ class TimestampGeneratorTab extends StatefulWidget {
 class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
   String _dateAsText = "DATE";
   String _timeAsText = "TIME";
+
+  var dropdownValue = MsgTypes.relative;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +45,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
           // Rows
           SizedBox(
             width: () {
-              double _minSize = 750;
+              double _minSize = 850;
               double _devisor = 1.1;
               // If the width is bigger than _minSize / _devisor, display the _minSize / _devisor.
               // Else, display the ScreenSize / the devisor
@@ -90,7 +102,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                           width: 150,
                           child: ElevatedButton(
                             onPressed: () => {},
-                            child: Text("Select Date"),
+                            child: Text("Select Time"),
                             style: ElevatedButton.styleFrom(
                               primary: Theme.of(context).colorScheme.secondary,
                             ),
@@ -100,14 +112,64 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                     ],
                   ),
                 ),
+                // Padding
+                SizedBox(height: 50),
                 // Layout & Generate Btn
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Add Dropdown and Generate Button.
+                    DropdownButton(
+                      value: dropdownValue,
+                      items: [
+                        DropdownMenuItem(
+                          child: Text("Relative"),
+                          value: MsgTypes.relative,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("short Time"),
+                          value: MsgTypes.shortTime,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("long Time"),
+                          value: MsgTypes.longTime,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("short Date"),
+                          value: MsgTypes.shortDate,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("long Date"),
+                          value: MsgTypes.longDate,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("long Date with short Time"),
+                          value: MsgTypes.longDateWithShortTime,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("long Date with day of week and short Time"),
+                          value: MsgTypes.longDateWithDayOfWeekAndShortTime,
+                        ),
+                      ],
+                      onChanged: (MsgTypes? newValue) {
+                        print(newValue);
+                        setState(() {
+                          dropdownValue = newValue ?? MsgTypes.relative;
+                        });
+                      },
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: Text("Generate"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green,
+                        ),
+                      ),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           )
