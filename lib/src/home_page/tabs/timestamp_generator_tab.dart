@@ -95,7 +95,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":f>";
         _formattedOutput = DateFormat("MMMM dd, yyyy").format(_calculatedDate) +
-            " at " +
+            " " +
             DateFormat("H:mm a").format(_calculatedDate);
       });
     }
@@ -103,7 +103,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":F>";
         _formattedOutput = DateFormat("EEEE, MMMM dd, yyyy").format(_calculatedDate) +
-            " at " +
+            " " +
             DateFormat("H:mm a").format(_calculatedDate);
       });
     }

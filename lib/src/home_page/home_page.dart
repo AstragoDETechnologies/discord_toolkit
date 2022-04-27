@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: Text("Discord Toolkit"),
+          title: Text("Discord Toolkit Beta"),
           bottom: TabBar(
             tabs: [
               Tab(

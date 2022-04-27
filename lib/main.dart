@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return Builder(builder: (context) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Discord Toolkit',
+        title: 'Discord Toolkit Beta',
         theme: ThemeData(
           colorScheme: ColorScheme.light().copyWith(
             primary: Colors.indigo,
