@@ -19,6 +19,7 @@ class HomePage extends StatelessWidget {
             tabs: [
               Tab(
                 icon: Icon(Icons.schedule),
+                text: "Timestamp Generator",
               ),
             ],
           ),

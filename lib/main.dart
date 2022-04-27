@@ -16,17 +16,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.light().copyWith(
           primary: Colors.indigo,
-          secondary: Colors.indigoAccent,
+          secondary: Colors.grey,
         ),
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.dark().copyWith(
           primary: Colors.indigo,
-          secondary: Colors.indigoAccent,
+          secondary: Colors.grey,
         ),
         scaffoldBackgroundColor: Colors.black,
       ),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       routes: {
         HomePage.routeName: (context) => HomePage(),
       },
