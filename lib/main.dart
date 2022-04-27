@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: Colors.black,
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       routes: {
         HomePage.routeName: (context) => HomePage(),
       },
