@@ -60,7 +60,6 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
   void generateOutput() {
     var _calculatedDate = calculateTimeSum();
     double _calculatedUnix = _calculatedDate.millisecondsSinceEpoch / 1000;
-    print(_calculatedUnix);
     if (_dropdownValue == MsgTypes.relative) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":R>";
@@ -113,9 +112,6 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
     TimeOfDay t = _selectedTime!;
     DateTime _sum = DateTime(_selectedDate!.year, _selectedDate!.month, _selectedDate!.day, t.hour,
         t.minute, _selectedSeconds);
-    print(_sum);
-    print(_secondsTextEditingController.text);
-    print(_selectedSeconds);
     return _sum;
   }
 
@@ -174,12 +170,10 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(0),
-                                lastDate: DateTime(2999, 12, 31),
+                                lastDate: DateTime(5999, 12, 31),
                               ).then(
                                 (pickedDate) {
                                   if (pickedDate != null) {
-                                    print("Date Picked!");
-                                    print(pickedDate);
                                     _selectedDate = pickedDate;
                                     updateText();
                                   }
@@ -218,8 +212,6 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                               ).then(
                                 (pickedTime) {
                                   if (pickedTime != null) {
-                                    print("Time Picked!");
-                                    print(pickedTime);
                                     _selectedTime = pickedTime;
                                     updateText();
                                   }
@@ -352,12 +344,16 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                   child: Text(
                     _output,
                     style: GoogleFonts.sourceCodePro().copyWith(fontSize: 50),
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 // Spacer
                 SizedBox(height: 10),
                 // Generated Readable Text
-                Text(_formattedOutput)
+                Text(
+                  _formattedOutput,
+                  textAlign: TextAlign.center,
+                )
               ],
             ),
           )
