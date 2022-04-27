@@ -10,27 +10,32 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Discord Toolkit',
-      theme: ThemeData(
-        colorScheme: ColorScheme.light().copyWith(
-          primary: Colors.indigo,
-          secondary: Colors.grey,
+    return Builder(builder: (context) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Discord Toolkit',
+        theme: ThemeData(
+          colorScheme: ColorScheme.light().copyWith(
+            primary: Colors.indigo,
+            secondary: Colors.grey,
+          ),
         ),
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.dark().copyWith(
-          primary: Colors.indigo,
-          secondary: Colors.grey,
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.dark().copyWith(
+            primary: Colors.indigo,
+            secondary: Colors.grey,
+          ),
+          scaffoldBackgroundColor: Colors.black,
         ),
-        scaffoldBackgroundColor: Colors.black,
-      ),
-      themeMode: ThemeMode.light,
-      routes: {
-        HomePage.routeName: (context) => HomePage(),
-      },
-      initialRoute: HomePage.routeName,
-    );
+        themeMode: ThemeMode.system,
+        // Always use 24h format
+        builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!),
+        routes: {
+          HomePage.routeName: (context) => HomePage(),
+        },
+        initialRoute: HomePage.routeName,
+      );
+    });
   }
 }

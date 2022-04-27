@@ -339,7 +339,15 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                 //Generated Text
                 GestureDetector(
                   onTap: () {
-                    FlutterClipboard.copy(_output);
+                    FlutterClipboard.copy(_output).then((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("String copied to clipboard"),
+                          duration: Duration(seconds: 2),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    });
                   },
                   child: Text(
                     _output,
