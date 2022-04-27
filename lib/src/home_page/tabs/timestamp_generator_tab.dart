@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'general_tab_description.dart';
 
@@ -20,10 +21,34 @@ class TimestampGeneratorTab extends StatefulWidget {
 }
 
 class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
-  String _dateAsText = "DATE";
-  String _timeAsText = "TIME";
+  String _dateAsText = "- no time selected -";
+  String _timeAsText = "- no date selected -";
+
+  DateTime? _selectedDate;
+  TimeOfDay? _selectedTime;
 
   var dropdownValue = MsgTypes.relative;
+
+  void updateText() {
+    if (_selectedDate != null) {
+      setState(() {
+        _dateAsText = DateFormat("EEEE, dd.MM.yyyy").format(_selectedDate!);
+      });
+    }
+    if (_selectedTime != null) {
+      TimeOfDay t = _selectedTime!;
+      final now = new DateTime.now();
+      DateTime _selectedTimeAsText = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+      setState(() {
+        _timeAsText = DateFormat("HH:mm").format(_selectedTimeAsText);
+      });
+    }
+    if (_selectedDate != null && _selectedTime != null) {
+      generateOutput();
+    }
+  }
+
+  void generateOutput() {}
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +93,30 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "$_dateAsText",
+                        "Date: $_dateAsText",
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: SizedBox(
                           width: 150,
                           child: ElevatedButton(
-                            onPressed: () => {},
+                            onPressed: () => {
+                              showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(0),
+                                lastDate: DateTime(2999, 12, 31),
+                              ).then(
+                                (pickedDate) {
+                                  if (pickedDate != null) {
+                                    print("Date Picked!");
+                                    print(pickedDate);
+                                    _selectedDate = pickedDate;
+                                    updateText();
+                                  }
+                                },
+                              ),
+                            },
                             child: Text("Select Date"),
                             style: ElevatedButton.styleFrom(
                               primary: Theme.of(context).colorScheme.secondary,
@@ -94,14 +135,28 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "$_timeAsText",
+                        "Time: $_timeAsText",
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: SizedBox(
                           width: 150,
                           child: ElevatedButton(
-                            onPressed: () => {},
+                            onPressed: () => {
+                              showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.now(),
+                              ).then(
+                                (pickedTime) {
+                                  if (pickedTime != null) {
+                                    print("Time Picked!");
+                                    print(pickedTime);
+                                    _selectedTime = pickedTime;
+                                    updateText();
+                                  }
+                                },
+                              ),
+                            },
                             child: Text("Select Time"),
                             style: ElevatedButton.styleFrom(
                               primary: Theme.of(context).colorScheme.secondary,
@@ -112,63 +167,59 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                     ],
                   ),
                 ),
-                // Padding
-                SizedBox(height: 50),
-                // Layout & Generate Btn
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    DropdownButton(
-                      value: dropdownValue,
-                      items: [
-                        DropdownMenuItem(
-                          child: Text("Relative"),
-                          value: MsgTypes.relative,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("short Time"),
-                          value: MsgTypes.shortTime,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("long Time"),
-                          value: MsgTypes.longTime,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("short Date"),
-                          value: MsgTypes.shortDate,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("long Date"),
-                          value: MsgTypes.longDate,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("long Date with short Time"),
-                          value: MsgTypes.longDateWithShortTime,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("long Date with day of week and short Time"),
-                          value: MsgTypes.longDateWithDayOfWeekAndShortTime,
-                        ),
-                      ],
-                      onChanged: (MsgTypes? newValue) {
-                        print(newValue);
-                        setState(() {
-                          dropdownValue = newValue ?? MsgTypes.relative;
-                        });
-                      },
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text("Generate"),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.green,
+                // Dropdown
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Message type: ",
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: DropdownButton(
+                          value: dropdownValue,
+                          items: [
+                            DropdownMenuItem(
+                              child: Text("relative"),
+                              value: MsgTypes.relative,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("short time"),
+                              value: MsgTypes.shortTime,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("long time"),
+                              value: MsgTypes.longTime,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("short date"),
+                              value: MsgTypes.shortDate,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("long date"),
+                              value: MsgTypes.longDate,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("long date with short time"),
+                              value: MsgTypes.longDateWithShortTime,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("long date with day of week and short time"),
+                              value: MsgTypes.longDateWithDayOfWeekAndShortTime,
+                            ),
+                          ],
+                          onChanged: (MsgTypes? newValue) {
+                            setState(() {
+                              dropdownValue = newValue ?? MsgTypes.relative;
+                            });
+                          },
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
