@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import 'general_tab_description.dart';
@@ -28,6 +29,8 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
   TimeOfDay? _selectedTime;
 
   var dropdownValue = MsgTypes.relative;
+
+  TextEditingController _secondsTextEditingController = TextEditingController();
 
   void updateText() {
     if (_selectedDate != null) {
@@ -100,7 +103,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                         child: SizedBox(
                           width: 150,
                           child: ElevatedButton(
-                            onPressed: () => {
+                            onPressed: () {
                               showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
@@ -115,7 +118,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                                     updateText();
                                   }
                                 },
-                              ),
+                              );
                             },
                             child: Text("Select Date"),
                             style: ElevatedButton.styleFrom(
@@ -142,7 +145,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                         child: SizedBox(
                           width: 150,
                           child: ElevatedButton(
-                            onPressed: () => {
+                            onPressed: () {
                               showTimePicker(
                                 context: context,
                                 initialTime: TimeOfDay.now(),
@@ -155,12 +158,49 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                                     updateText();
                                   }
                                 },
-                              ),
+                              );
                             },
                             child: Text("Select Time"),
                             style: ElevatedButton.styleFrom(
                               primary: Theme.of(context).colorScheme.secondary,
                             ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Seconds Field
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Seconds: ",
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: SizedBox(
+                          width: 150,
+                          child: TextField(
+                            autocorrect: false,
+                            textAlign: TextAlign.start,
+                            controller: _secondsTextEditingController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Seconds',
+                            ),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(2),
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            onChanged: (v) {
+                              if (int.parse(v) >= 60) {
+                                _secondsTextEditingController.text = "59";
+                              }
+                            },
                           ),
                         ),
                       ),
