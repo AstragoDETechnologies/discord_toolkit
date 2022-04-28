@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'tabs/timestamp_generator_tab.dart';
+import 'tabs/styled_text_generator_tab.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 1,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
@@ -20,6 +21,10 @@ class HomePage extends StatelessWidget {
               Tab(
                 icon: Icon(Icons.schedule),
                 text: "Timestamp Generator",
+              ),
+              Tab(
+                icon: Icon(Icons.edit_note),
+                text: "Styled Text Generator",
               ),
             ],
           ),
@@ -39,6 +44,7 @@ class HomePage extends StatelessWidget {
         body: TabBarView(
           children: [
             TimestampGeneratorTab(),
+            StyledTextGeneratorTab(),
           ],
         ),
       ),
