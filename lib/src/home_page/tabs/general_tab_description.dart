@@ -20,6 +20,7 @@ class TabDescription extends StatelessWidget {
         Text(
           title,
           style: GoogleFonts.mavenPro().copyWith(fontSize: 35, fontWeight: FontWeight.w600),
+          textAlign: TextAlign.center,
         ),
         // Spacer / Padding
         SizedBox(
@@ -31,6 +32,7 @@ class TabDescription extends StatelessWidget {
             style: GoogleFonts.openSans(),
             children: description,
           ),
+          textAlign: TextAlign.center,
         ),
         // Padding
         SizedBox(height: 10),
