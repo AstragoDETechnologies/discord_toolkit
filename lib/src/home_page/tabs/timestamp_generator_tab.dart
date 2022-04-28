@@ -389,7 +389,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                   _previewText,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.openSans()
-                      .copyWith(fontSize: (_size.width / 50 > 16) ? 16 : _size.width / 50),
+                      .copyWith(fontSize: (_size.width / 40 > 16) ? 16 : _size.width / 40),
                 )
               ],
             ),
