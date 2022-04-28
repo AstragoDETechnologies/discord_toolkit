@@ -361,7 +361,8 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                         onTap: _copyOutputToClipboard,
                         child: Text(
                           _output,
-                          style: GoogleFonts.sourceCodePro().copyWith(fontSize: 50),
+                          style: GoogleFonts.sourceCodePro()
+                              .copyWith(fontSize: (_size.width / 13 > 60) ? 60 : _size.width / 13),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -387,6 +388,8 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                 Text(
                   _previewText,
                   textAlign: TextAlign.center,
+                  style: GoogleFonts.openSans()
+                      .copyWith(fontSize: (_size.width / 50 > 16) ? 16 : _size.width / 50),
                 )
               ],
             ),

@@ -16,13 +16,13 @@ class MyApp extends StatelessWidget {
         title: 'Discord Toolkit Beta',
         theme: ThemeData(
           colorScheme: ColorScheme.light().copyWith(
-            primary: Colors.indigo,
+            primary: Color.fromARGB(255, 88, 101, 242),
             secondary: Colors.grey[800],
           ),
         ),
         darkTheme: ThemeData(
           colorScheme: ColorScheme.dark().copyWith(
-            primary: Colors.indigo,
+            primary: Color.fromARGB(255, 88, 101, 242),
             secondary: Colors.grey[300],
           ),
           scaffoldBackgroundColor: Colors.black,
