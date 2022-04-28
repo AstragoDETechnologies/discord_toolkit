@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +30,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
   String _dateAsText = "- no date selected -";
   String _timeAsText = "- no time selected -";
   String _output = "";
-  String _formattedOutput = "";
+  String _previewText = "";
 
   int _selectedSeconds = 0;
   DateTime? _selectedDate;
@@ -38,12 +40,15 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
 
   TextEditingController _secondsTextEditingController = TextEditingController();
 
-  void updateText() {
+  // Update the displayed Texts.
+  void _updateText() {
+    // Update Date Test
     if (_selectedDate != null) {
       setState(() {
         _dateAsText = DateFormat("EEEE, dd.MM.yyyy").format(_selectedDate!);
       });
     }
+    // Update Time Text
     if (_selectedTime != null) {
       TimeOfDay t = _selectedTime!;
       final now = new DateTime.now();
@@ -52,48 +57,53 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
         _timeAsText = DateFormat("HH:mm").format(_selectedTimeAsDateTime);
       });
     }
+    // Generate the output, if both Date and Time are selected
     if (_selectedDate != null && _selectedTime != null) {
-      generateOutput();
+      _generateOutput();
     }
   }
 
-  void generateOutput() {
-    var _calculatedDate = calculateTimeSum();
+  // Generate and Display the output
+  void _generateOutput() {
+    // Get the selected DateTime
+    var _calculatedDate = _calculateTimeSum();
+    // Calculate The Unix-Time in Seconds
     double _calculatedUnix = _calculatedDate.millisecondsSinceEpoch / 1000;
+    // Calculate the Output and Preview for the selected Option
     if (_dropdownValue == MsgTypes.relative) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":R>";
-        _formattedOutput = Jiffy(_calculatedDate).fromNow();
+        _previewText = Jiffy(_calculatedDate).fromNow();
       });
     }
     if (_dropdownValue == MsgTypes.shortTime) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":t>";
-        _formattedOutput = DateFormat("H:mm a").format(_calculatedDate);
+        _previewText = DateFormat("H:mm a").format(_calculatedDate);
       });
     }
     if (_dropdownValue == MsgTypes.longTime) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":T>";
-        _formattedOutput = DateFormat("H:mm:ss a").format(_calculatedDate);
+        _previewText = DateFormat("H:mm:ss a").format(_calculatedDate);
       });
     }
     if (_dropdownValue == MsgTypes.shortDate) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":d>";
-        _formattedOutput = DateFormat("M/dd/yy").format(_calculatedDate);
+        _previewText = DateFormat("M/dd/yy").format(_calculatedDate);
       });
     }
     if (_dropdownValue == MsgTypes.longDate) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":D>";
-        _formattedOutput = DateFormat("MMMM dd, yyyy").format(_calculatedDate);
+        _previewText = DateFormat("MMMM dd, yyyy").format(_calculatedDate);
       });
     }
     if (_dropdownValue == MsgTypes.longDateWithShortTime) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":f>";
-        _formattedOutput = DateFormat("MMMM dd, yyyy").format(_calculatedDate) +
+        _previewText = DateFormat("MMMM dd, yyyy").format(_calculatedDate) +
             " " +
             DateFormat("H:mm a").format(_calculatedDate);
       });
@@ -101,18 +111,32 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
     if (_dropdownValue == MsgTypes.longDateWithDayOfWeekAndShortTime) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":F>";
-        _formattedOutput = DateFormat("EEEE, MMMM dd, yyyy").format(_calculatedDate) +
+        _previewText = DateFormat("EEEE, MMMM dd, yyyy").format(_calculatedDate) +
             " " +
             DateFormat("H:mm a").format(_calculatedDate);
       });
     }
   }
 
-  DateTime calculateTimeSum() {
+  // Convert the selected Date into a DateTime object and return it.
+  DateTime _calculateTimeSum() {
     TimeOfDay t = _selectedTime!;
     DateTime _sum = DateTime(_selectedDate!.year, _selectedDate!.month, _selectedDate!.day, t.hour,
         t.minute, _selectedSeconds);
     return _sum;
+  }
+
+  // Copy the Text of the output to the clipboard
+  void _copyOutputToClipboard() {
+    FlutterClipboard.copy(_output).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("String copied to clipboard"),
+          duration: Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    });
   }
 
   @override
@@ -175,7 +199,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                                 (pickedDate) {
                                   if (pickedDate != null) {
                                     _selectedDate = pickedDate;
-                                    updateText();
+                                    _updateText();
                                   }
                                 },
                               );
@@ -213,7 +237,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                                 (pickedTime) {
                                   if (pickedTime != null) {
                                     _selectedTime = pickedTime;
-                                    updateText();
+                                    _updateText();
                                   }
                                 },
                               );
@@ -263,7 +287,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                               } else {
                                 _selectedSeconds = 0;
                               }
-                              updateText();
+                              _updateText();
                             },
                           ),
                         ),
@@ -319,7 +343,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                             setState(() {
                               _dropdownValue = newValue ?? MsgTypes.relative;
                             });
-                            updateText();
+                            _updateText();
                           },
                         ),
                       ),
@@ -329,29 +353,41 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                 // Spacer
                 SizedBox(height: 50),
                 //Generated Text
-                GestureDetector(
-                  onTap: () {
-                    FlutterClipboard.copy(_output).then((_) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("String copied to clipboard"),
-                          duration: Duration(seconds: 2),
-                          behavior: SnackBarBehavior.floating,
+                SizedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Text
+                      GestureDetector(
+                        onTap: _copyOutputToClipboard,
+                        child: Text(
+                          _output,
+                          style: GoogleFonts.sourceCodePro().copyWith(fontSize: 50),
+                          textAlign: TextAlign.center,
                         ),
-                      );
-                    });
-                  },
-                  child: Text(
-                    _output,
-                    style: GoogleFonts.sourceCodePro().copyWith(fontSize: 50),
-                    textAlign: TextAlign.center,
+                      ),
+                      // Button
+                      Builder(builder: (context) {
+                        if (_output != "") {
+                          return IconButton(
+                            onPressed: _copyOutputToClipboard,
+                            icon: Icon(Icons.copy),
+                          );
+                        } else {
+                          // Dummy Item
+                          return SizedBox();
+                        }
+                      })
+                    ],
                   ),
                 ),
+
                 // Spacer
                 SizedBox(height: 10),
                 // Generated Readable Text
                 Text(
-                  _formattedOutput,
+                  _previewText,
                   textAlign: TextAlign.center,
                 )
               ],
