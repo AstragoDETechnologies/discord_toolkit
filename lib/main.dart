@@ -17,17 +17,17 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.light().copyWith(
             primary: Colors.indigo,
-            secondary: Colors.grey,
+            secondary: Colors.grey[800],
           ),
         ),
         darkTheme: ThemeData(
           colorScheme: ColorScheme.dark().copyWith(
             primary: Colors.indigo,
-            secondary: Colors.grey,
+            secondary: Colors.grey[300],
           ),
           scaffoldBackgroundColor: Colors.black,
         ),
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
         // Always use 24h format
         builder: (context, child) => MediaQuery(
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!),
