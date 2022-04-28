@@ -1,11 +1,11 @@
 {
-    "name": "discord_toolkit",
-    "short_name": "discord_toolkit",
+    "name": "Discord Toolkit",
+    "short_name": "DC Toolkit",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A simplistic toolkit for discord",
+    "background_color": "#5865F2",
+    "theme_color": "#5865F2",
+    "description": "A simplistic toolkit for Discord",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

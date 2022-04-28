@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           ),
           scaffoldBackgroundColor: Colors.black,
         ),
-        themeMode: ThemeMode.light,
+        themeMode: ThemeMode.system,
         // Always use 24h format
         builder: (context, child) => MediaQuery(
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!),

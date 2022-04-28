@@ -1,5 +1,5 @@
 name: discord_toolkit
-description: A simplistic toolkit for discord
+description: A simplistic toolkit for Discord
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
