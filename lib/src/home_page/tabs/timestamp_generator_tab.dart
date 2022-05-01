@@ -7,7 +7,7 @@ import 'package:clipboard/clipboard.dart';
 
 import 'general_tab_description.dart';
 
-enum MsgTypes {
+enum MsgStyles {
   relative,
   shortTime,
   longTime,
@@ -34,7 +34,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
 
-  var _dropdownValue = MsgTypes.relative;
+  var _dropdownValue = MsgStyles.relative;
 
   TextEditingController _secondsTextEditingController = TextEditingController();
 
@@ -68,37 +68,37 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
     // Calculate The Unix-Time in Seconds
     double _calculatedUnix = _calculatedDate.millisecondsSinceEpoch / 1000;
     // Calculate the Output and Preview for the selected Option
-    if (_dropdownValue == MsgTypes.relative) {
+    if (_dropdownValue == MsgStyles.relative) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":R>";
         _previewText = Jiffy(_calculatedDate).fromNow();
       });
     }
-    if (_dropdownValue == MsgTypes.shortTime) {
+    if (_dropdownValue == MsgStyles.shortTime) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":t>";
         _previewText = DateFormat("H:mm a").format(_calculatedDate);
       });
     }
-    if (_dropdownValue == MsgTypes.longTime) {
+    if (_dropdownValue == MsgStyles.longTime) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":T>";
         _previewText = DateFormat("H:mm:ss a").format(_calculatedDate);
       });
     }
-    if (_dropdownValue == MsgTypes.shortDate) {
+    if (_dropdownValue == MsgStyles.shortDate) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":d>";
         _previewText = DateFormat("M/dd/yy").format(_calculatedDate);
       });
     }
-    if (_dropdownValue == MsgTypes.longDate) {
+    if (_dropdownValue == MsgStyles.longDate) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":D>";
         _previewText = DateFormat("MMMM dd, yyyy").format(_calculatedDate);
       });
     }
-    if (_dropdownValue == MsgTypes.longDateWithShortTime) {
+    if (_dropdownValue == MsgStyles.longDateWithShortTime) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":f>";
         _previewText = DateFormat("MMMM dd, yyyy").format(_calculatedDate) +
@@ -106,7 +106,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
             DateFormat("H:mm a").format(_calculatedDate);
       });
     }
-    if (_dropdownValue == MsgTypes.longDateWithDayOfWeekAndShortTime) {
+    if (_dropdownValue == MsgStyles.longDateWithDayOfWeekAndShortTime) {
       setState(() {
         _output = "<t:" + _calculatedUnix.toString() + ":F>";
         _previewText = DateFormat("EEEE, MMMM dd, yyyy").format(_calculatedDate) +
@@ -149,7 +149,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
           TabDescription(
             title: "Timestamp Generator",
             description: [
-              TextSpan(text: "Generate Timestamps of various types to put in your Messages."),
+              TextSpan(text: "Generate Timestamps of various styles to put in your Messages."),
             ],
           ),
           // Padding
@@ -301,7 +301,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Message type: ",
+                        "Style: ",
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 10),
@@ -310,36 +310,36 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                           items: [
                             DropdownMenuItem(
                               child: Text("relative"),
-                              value: MsgTypes.relative,
+                              value: MsgStyles.relative,
                             ),
                             DropdownMenuItem(
                               child: Text("short time"),
-                              value: MsgTypes.shortTime,
+                              value: MsgStyles.shortTime,
                             ),
                             DropdownMenuItem(
                               child: Text("long time"),
-                              value: MsgTypes.longTime,
+                              value: MsgStyles.longTime,
                             ),
                             DropdownMenuItem(
                               child: Text("short date"),
-                              value: MsgTypes.shortDate,
+                              value: MsgStyles.shortDate,
                             ),
                             DropdownMenuItem(
                               child: Text("long date"),
-                              value: MsgTypes.longDate,
+                              value: MsgStyles.longDate,
                             ),
                             DropdownMenuItem(
                               child: Text("long date with short time"),
-                              value: MsgTypes.longDateWithShortTime,
+                              value: MsgStyles.longDateWithShortTime,
                             ),
                             DropdownMenuItem(
                               child: Text("long date with day of week and short time"),
-                              value: MsgTypes.longDateWithDayOfWeekAndShortTime,
+                              value: MsgStyles.longDateWithDayOfWeekAndShortTime,
                             ),
                           ],
-                          onChanged: (MsgTypes? newValue) {
+                          onChanged: (MsgStyles? newValue) {
                             setState(() {
-                              _dropdownValue = newValue ?? MsgTypes.relative;
+                              _dropdownValue = newValue ?? MsgStyles.relative;
                             });
                             _updateText();
                           },
