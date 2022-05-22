@@ -149,7 +149,7 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
           TabDescription(
             title: "Timestamp Generator",
             description: [
-              TextSpan(text: "Generate Timestamps of various styles to put in your Messages."),
+              TextSpan(text: "Generate timestamps of various styles to put in your messages."),
             ],
           ),
           // Padding

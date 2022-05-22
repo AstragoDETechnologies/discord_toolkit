@@ -48,7 +48,7 @@ class _ProfileLinkGeneratorState extends State<ProfileLinkGenerator> {
           TabDescription(
             title: "Proflile Link Generator",
             description: [
-              TextSpan(text: "Generate the Link to your Profile."),
+              TextSpan(text: "Generate a link to your Discord profile.\n"),
             ],
           ),
           // Padding

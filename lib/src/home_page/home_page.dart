@@ -33,9 +33,9 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 showAboutDialog(
                   context: context,
-                  applicationVersion: "b1.1.1",
+                  applicationVersion: "b1.1.2",
                   applicationLegalese:
-                      "This application was NOT developed by Discord. Discord is a registered Trademark.",
+                      "This application was NOT developed by Discord. Discord is a registered trademark.",
                 );
               },
               icon: Icon(Icons.info_outline),
