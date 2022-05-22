@@ -20,7 +20,7 @@ class _ProfileLinkGeneratorState extends State<ProfileLinkGenerator> {
 
   void _generateOutput() {
     setState(() {
-      _output = "discordapp.com/users/${_userIDTextEditingController.text}";
+      _output = "https://discordapp.com/users/${_userIDTextEditingController.text}";
     });
   }
 
