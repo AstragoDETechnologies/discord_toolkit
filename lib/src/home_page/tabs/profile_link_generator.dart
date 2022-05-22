@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:clipboard/clipboard.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 import 'general_tab_description.dart';
 
@@ -57,18 +56,6 @@ class _ProfileLinkGeneratorState extends State<ProfileLinkGenerator> {
           // Rows
           ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 850),
-            // width: () {
-            //   double _minSize = 850;
-            //   double _devisor = 1.1;
-            //   // If the width is bigger than _minSize / _devisor, display the _minSize / _devisor.
-            //   // Else, display the ScreenSize / the devisor
-            //   // --> Create a section with a maximum width.
-            //   if (_size.width / _devisor > _minSize / _devisor) {
-            //     return _minSize / _devisor;
-            //   } else {
-            //     return _size.width / _devisor;
-            //   }
-            // }(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -120,11 +107,10 @@ class _ProfileLinkGeneratorState extends State<ProfileLinkGenerator> {
                       // Text
                       GestureDetector(
                         onTap: _copyOutputToClipboard,
-                        child: AutoSizeText(
+                        child: Text(
                           _output,
-                          maxLines: 1,
-                          minFontSize: 30,
-                          style: GoogleFonts.sourceCodePro(),
+                          style: GoogleFonts.sourceCodePro()
+                              .copyWith(fontSize: (_size.width / 32 > 28) ? 28 : _size.width / 32),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -139,7 +125,7 @@ class _ProfileLinkGeneratorState extends State<ProfileLinkGenerator> {
                           // Dummy Item
                           return SizedBox();
                         }
-                      })
+                      }),
                     ],
                   ),
                 ),
