@@ -32,9 +32,11 @@ class HomePage extends StatelessWidget {
             IconButton(
               onPressed: () {
                 showAboutDialog(
-                    context: context,
-                    applicationLegalese:
-                        "This application was NOT developed by Discord. Discord is a registered Trademark.");
+                  context: context,
+                  applicationVersion: "1.1.0",
+                  applicationLegalese:
+                      "This application was NOT developed by Discord. Discord is a registered Trademark.",
+                );
               },
               icon: Icon(Icons.info_outline),
               tooltip: "Information",
