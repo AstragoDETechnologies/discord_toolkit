@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:clipboard/clipboard.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 import 'general_tab_description.dart';
 
@@ -361,11 +360,10 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                       // Text
                       GestureDetector(
                         onTap: _copyOutputToClipboard,
-                        child: AutoSizeText(
+                        child: Text(
                           _output,
                           maxLines: 1,
-                          minFontSize: 30,
-                          style: GoogleFonts.sourceCodePro(),
+                          style: GoogleFonts.sourceCodePro().copyWith(fontSize: 28),
                           textAlign: TextAlign.center,
                         ),
                       ),
