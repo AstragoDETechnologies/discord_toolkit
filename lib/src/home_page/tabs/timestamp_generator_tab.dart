@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:clipboard/clipboard.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import 'general_tab_description.dart';
 
@@ -155,199 +156,202 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
           // Padding
           SizedBox(height: 40),
           // Rows
-          SizedBox(
-            width: () {
-              double _minSize = 850;
-              double _devisor = 1.1;
-              // If the width is bigger than _minSize / _devisor, display the _minSize / _devisor.
-              // Else, display the ScreenSize / the devisor
-              // --> Create a section with a maximum width.
-              if (_size.width / _devisor > _minSize / _devisor) {
-                return _minSize / _devisor;
-              } else {
-                return _size.width / _devisor;
-              }
-            }(),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 850),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Date BTN
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                // SELECTION COLUMN
+
+                //
+                SizedBox(
+                  width: 370,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        "Date: $_dateAsText",
-                      ),
+                      // Date BTN
                       Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: SizedBox(
-                          width: 150,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(0),
-                                lastDate: DateTime(5999, 12, 31),
-                              ).then(
-                                (pickedDate) {
-                                  if (pickedDate != null) {
-                                    _selectedDate = pickedDate;
-                                    _updateText();
-                                  }
-                                },
-                              );
-                            },
-                            child: Text("Select Date"),
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.secondary,
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Date: $_dateAsText",
                             ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Time Btn
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Time: $_timeAsText",
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: SizedBox(
-                          width: 150,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay.now(),
-                              ).then(
-                                (pickedTime) {
-                                  if (pickedTime != null) {
-                                    _selectedTime = pickedTime;
-                                    _updateText();
-                                  }
-                                },
-                              );
-                            },
-                            child: Text("Select Time"),
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Seconds Field
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Seconds: ",
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: SizedBox(
-                          width: 150,
-                          child: TextField(
-                            autocorrect: false,
-                            textAlign: TextAlign.start,
-                            controller: _secondsTextEditingController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Seconds',
-                            ),
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(2),
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            onChanged: (v) {
-                              if (v != "") {
-                                if (int.parse(v) >= 60) {
-                                  _secondsTextEditingController.text = "59";
-                                }
-                                _selectedSeconds = int.parse(_secondsTextEditingController.text);
-                              } else {
-                                _selectedSeconds = 0;
-                              }
-                              _updateText();
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Dropdown
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Style: ",
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: DropdownButton(
-                          value: _dropdownValue,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text("relative"),
-                              value: MsgStyles.relative,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("short time"),
-                              value: MsgStyles.shortTime,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("long time"),
-                              value: MsgStyles.longTime,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("short date"),
-                              value: MsgStyles.shortDate,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("long date"),
-                              value: MsgStyles.longDate,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("long date with short time"),
-                              value: MsgStyles.longDateWithShortTime,
-                            ),
-                            DropdownMenuItem(
-                              child: Text("long date with day of week and short time"),
-                              value: MsgStyles.longDateWithDayOfWeekAndShortTime,
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: SizedBox(
+                                width: 150,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(0),
+                                      lastDate: DateTime(5999, 12, 31),
+                                    ).then(
+                                      (pickedDate) {
+                                        if (pickedDate != null) {
+                                          _selectedDate = pickedDate;
+                                          _updateText();
+                                        }
+                                      },
+                                    );
+                                  },
+                                  child: Text("Select Date"),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Theme.of(context).colorScheme.secondary,
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
-                          onChanged: (MsgStyles? newValue) {
-                            setState(() {
-                              _dropdownValue = newValue ?? MsgStyles.relative;
-                            });
-                            _updateText();
-                          },
+                        ),
+                      ),
+                      // Time Btn
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Time: $_timeAsText",
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: SizedBox(
+                                width: 150,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    showTimePicker(
+                                      context: context,
+                                      initialTime: TimeOfDay.now(),
+                                    ).then(
+                                      (pickedTime) {
+                                        if (pickedTime != null) {
+                                          _selectedTime = pickedTime;
+                                          _updateText();
+                                        }
+                                      },
+                                    );
+                                  },
+                                  child: Text("Select Time"),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Theme.of(context).colorScheme.secondary,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Seconds Field
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Seconds: ",
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: SizedBox(
+                                width: 150,
+                                child: TextField(
+                                  autocorrect: false,
+                                  textAlign: TextAlign.start,
+                                  controller: _secondsTextEditingController,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Seconds',
+                                  ),
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(2),
+                                    FilteringTextInputFormatter.digitsOnly,
+                                  ],
+                                  onChanged: (v) {
+                                    if (v != "") {
+                                      if (int.parse(v) >= 60) {
+                                        _secondsTextEditingController.text = "59";
+                                      }
+                                      _selectedSeconds =
+                                          int.parse(_secondsTextEditingController.text);
+                                    } else {
+                                      _selectedSeconds = 0;
+                                    }
+                                    _updateText();
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Dropdown
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Style: ",
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: DropdownButton(
+                                value: _dropdownValue,
+                                items: [
+                                  DropdownMenuItem(
+                                    child: Text("relative"),
+                                    value: MsgStyles.relative,
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text("short time"),
+                                    value: MsgStyles.shortTime,
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text("long time"),
+                                    value: MsgStyles.longTime,
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text("short date"),
+                                    value: MsgStyles.shortDate,
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text("long date"),
+                                    value: MsgStyles.longDate,
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text("long date with short time"),
+                                    value: MsgStyles.longDateWithShortTime,
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text("long date with day of week and short time"),
+                                    value: MsgStyles.longDateWithDayOfWeekAndShortTime,
+                                  ),
+                                ],
+                                onChanged: (MsgStyles? newValue) {
+                                  setState(() {
+                                    _dropdownValue = newValue ?? MsgStyles.relative;
+                                  });
+                                  _updateText();
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
+
                 // Spacer
                 SizedBox(height: 50),
                 //Generated Text
@@ -359,10 +363,11 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
                       // Text
                       GestureDetector(
                         onTap: _copyOutputToClipboard,
-                        child: Text(
+                        child: AutoSizeText(
                           _output,
-                          style: GoogleFonts.sourceCodePro()
-                              .copyWith(fontSize: (_size.width / 13 > 60) ? 60 : _size.width / 13),
+                          maxLines: 1,
+                          minFontSize: 30,
+                          style: GoogleFonts.sourceCodePro(),
                           textAlign: TextAlign.center,
                         ),
                       ),

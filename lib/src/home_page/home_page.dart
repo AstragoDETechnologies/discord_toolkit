@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'tabs/timestamp_generator_tab.dart';
-import 'tabs/styled_text_generator_tab.dart';
+import 'tabs/profile_link_generator.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,8 +23,8 @@ class HomePage extends StatelessWidget {
                 text: "Timestamp Generator",
               ),
               Tab(
-                icon: Icon(Icons.edit_note),
-                text: "Styled Text Generator",
+                icon: Icon(Icons.link),
+                text: "Profile Link Generator",
               ),
             ],
           ),
@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
         body: TabBarView(
           children: [
             TimestampGeneratorTab(),
-            StyledTextGeneratorTab(),
+            ProfileLinkGenerator(),
           ],
         ),
       ),
