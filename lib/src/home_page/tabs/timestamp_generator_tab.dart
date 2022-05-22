@@ -163,8 +163,6 @@ class _TimestampGeneratorTabState extends State<TimestampGeneratorTab> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // SELECTION COLUMN
-
-                //
                 SizedBox(
                   width: 370,
                   child: Column(
